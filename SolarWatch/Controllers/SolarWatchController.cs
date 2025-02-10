@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SolarWatch.Models;
 using SolarWatch.Services;
 
 [ApiController]
@@ -17,7 +18,7 @@ public class SolarWatchController : ControllerBase
     {
         return await _solarService.GetSunriseAsync(city, date);
     }
-
+    
     [HttpGet("GetSunset")]
     public async Task<string> GetSunset(string city, DateOnly date)
     {
