@@ -12,7 +12,7 @@ public class SolarWatchController : ControllerBase
     {
         _solarService = solarService;
     }
-
+    
     [HttpGet("GetSunrise")]
     public async Task<string> GetSunrise(string city, DateOnly date)
     {
