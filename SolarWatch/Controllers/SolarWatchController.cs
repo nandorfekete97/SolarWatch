@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SolarWatch.Models;
 using SolarWatch.Services;
@@ -19,7 +20,7 @@ public class SolarWatchController : ControllerBase
         return await _solarService.GetSunriseAsync(city, date);
     }
     
-    [HttpGet("GetSunset")]
+    [HttpGet("GetSunset"), Authorize]
     public async Task<string> GetSunset(string city, DateOnly date)
     {
         return await _solarService.GetSunsetAsync(city, date);
