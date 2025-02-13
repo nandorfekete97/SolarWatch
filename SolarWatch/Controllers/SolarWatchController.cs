@@ -14,13 +14,13 @@ public class SolarWatchController : ControllerBase
         _solarService = solarService;
     }
     
-    [HttpGet("GetSunrise")]
+    [HttpGet("GetSunrise"), Authorize(Roles = "Admin")]
     public async Task<string> GetSunrise(string city, DateOnly date)
     {
         return await _solarService.GetSunriseAsync(city, date);
     }
     
-    [HttpGet("GetSunset"), Authorize]
+    [HttpGet("GetSunset"), Authorize(Roles = "User, Admin")]
     public async Task<string> GetSunset(string city, DateOnly date)
     {
         return await _solarService.GetSunsetAsync(city, date);

@@ -21,10 +21,10 @@ public class TokenService : ITokenService
         _secretKey = configuration["JwtSettings:IssuerSigningKey"]!;
     }
 
-    public string CreateToken(IdentityUser user)
+    public string CreateToken(IdentityUser user, string role)
     {
         var expiration = DateTime.UtcNow.AddMinutes(ExpirationMinutes);
-        var token = CreateJwtToken(CreateClaims(user), CreateSigningCredentials(), expiration);
+        var token = CreateJwtToken(CreateClaims(user, role), CreateSigningCredentials(), expiration);
 
         var tokenHandler = new JwtSecurityTokenHandler();
         return tokenHandler.WriteToken(token);
@@ -34,7 +34,7 @@ public class TokenService : ITokenService
         new JwtSecurityToken(_issuer, _audience, claims, expires: expiration,
             signingCredentials: credentials);
 
-    private List<Claim> CreateClaims(IdentityUser user)
+    private List<Claim> CreateClaims(IdentityUser user, string? role)
     {
         try
         {
@@ -46,8 +46,15 @@ public class TokenService : ITokenService
                     EpochTime.GetIntDate(DateTime.UtcNow).ToString(CultureInfo.InvariantCulture),
                     ClaimValueTypes.Integer64),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email)
             };
+
+            if (role != null)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+            
             return claims;
         }
         catch (Exception e)

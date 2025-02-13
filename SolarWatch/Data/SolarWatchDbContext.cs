@@ -5,7 +5,7 @@ using SolarWatch.Models;
 
 namespace SolarWatch;
 
-public class SolarWatchDbContext : IdentityUserContext<IdentityUser>
+public class SolarWatchDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
 {
     public DbSet<City> Cities { get; set; }
     public DbSet<SunInfo> SunInfos { get; set; }
