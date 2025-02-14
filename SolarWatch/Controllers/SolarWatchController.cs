@@ -25,4 +25,17 @@ public class SolarWatchController : ControllerBase
     {
         return await _solarService.GetSunsetAsync(city, date);
     }
+
+    [HttpDelete("DeleteCity")]
+    public IActionResult DeleteCity(string name)
+    {
+        bool deleted = _solarService.DeleteCityByName(name).Result;
+
+        if (!deleted)
+        {
+            return NotFound("City not found");
+        }
+
+        return Ok("City deleted successfully.");
+    }
 }

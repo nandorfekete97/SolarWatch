@@ -72,6 +72,26 @@ public class SolarService : ISolarService
         return sunInfo;
     }
 
+    public async Task<bool> DeleteCityByName(string name)
+    {
+        var city = _cityRepository.GetCityByName(name);
+        if (city == null)
+        {
+            return false;
+        }
+
+        try
+        {
+            _cityRepository.DeleteCity(city);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error deleting city: {e.Message}");
+            return false;
+        }
+    }
+
     private async Task<string> GetResponseFromUriAsync(string uri)
     {
         // using is needed, because _httpClient.GetAsync(uri) returns an HttpResponseMessage object, which contains network resources - resources we don't want to leak out, or hold onto longer, then necessary; using uses IDisposable to clean up resources
