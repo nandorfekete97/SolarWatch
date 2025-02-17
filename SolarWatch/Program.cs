@@ -11,6 +11,19 @@ using SolarWatch.Services.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Connect frontend
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
+
 // Call separate methods for better organization
 AddServices();
 ConfigureSwagger();
@@ -19,6 +32,8 @@ AddAuthentication();
 AddIdentity();
 
 var app = builder.Build();
+
+app.UseCors("AllowReactApp");
 
 // Seed roles and admin user
 using var scope = app.Services.CreateScope();

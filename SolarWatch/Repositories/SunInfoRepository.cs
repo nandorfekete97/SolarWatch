@@ -1,4 +1,5 @@
 using System.Collections;
+using Microsoft.EntityFrameworkCore;
 using SolarWatch.Models;
 
 namespace SolarWatch.Repositories;
@@ -10,6 +11,11 @@ public class SunInfoRepository : ISunInfoRepository
     public SunInfoRepository(SolarWatchDbContext solarWatchDbContext)
     {
         _solarWatchDbContext = solarWatchDbContext;
+    }
+
+    public async Task<SunInfo?> GetSunInfoById(int sunInfoId)
+    {
+        return await _solarWatchDbContext.SunInfos.FirstOrDefaultAsync(sunInfo => sunInfo.Id == sunInfoId);
     }
 
     public SunInfo? GetSunInfo(int cityId, DateOnly date)
@@ -29,10 +35,10 @@ public class SunInfoRepository : ISunInfoRepository
         _solarWatchDbContext.SaveChanges();
     }
     
-    public void UpdateSunInfo(SunInfo sunInfo)
+    public async Task UpdateSunInfoAsync(SunInfo sunInfo)
     {
         _solarWatchDbContext.Update(sunInfo);
-        _solarWatchDbContext.SaveChanges();
+        await _solarWatchDbContext.SaveChangesAsync();
     }
     
     public void DeleteSunInfo(SunInfo sunInfo)

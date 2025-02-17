@@ -1,4 +1,5 @@
 using SolarWatch.Models;
+using Microsoft.EntityFrameworkCore; // Needed for async DB operations
 
 namespace SolarWatch.Repositories;
 
@@ -11,9 +12,16 @@ public class CityRepository : ICityRepository
         _solarWatchDbContext = solarWatchDbContext;
     }
 
-    public City? GetCityByName(string name)
+    public async Task<City?> GetCityById(int id)
     {
-        return _solarWatchDbContext.Cities.FirstOrDefault(city => city.Name == name);
+        return await _solarWatchDbContext.Cities
+            .FirstOrDefaultAsync(city => city.Id == id); 
+    }
+
+    public async Task<City?> GetCityByNameAsync(string name)
+    {
+        return await _solarWatchDbContext.Cities
+            .FirstOrDefaultAsync(city => city.Name == name);
     }
 
     public IEnumerable<City> GetAll()
@@ -27,15 +35,15 @@ public class CityRepository : ICityRepository
         _solarWatchDbContext.SaveChanges();
     }
 
-    public void UpdateCity(City city)
+    public async Task UpdateCityAsync(City city)
     {
         _solarWatchDbContext.Update(city);
-        _solarWatchDbContext.SaveChanges();
+        await _solarWatchDbContext.SaveChangesAsync();
     }
 
-    public void DeleteCity(City city)
+    public async Task DeleteCityAsync(City city)
     {
-        _solarWatchDbContext.Remove(city);
-        _solarWatchDbContext.SaveChanges();
+        _solarWatchDbContext.Cities.Remove(city);
+        await _solarWatchDbContext.SaveChangesAsync(); 
     }
 }
