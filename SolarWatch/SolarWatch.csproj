@@ -5,18 +5,22 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-      <UserSecretsId>26fc2ac2-bce5-43a7-b801-29b15f1e93a8</UserSecretsId>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <UserSecretsId>26fc2ac2-bce5-43a7-b801-29b15f1e93a8</UserSecretsId>
   </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="8.1.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.16" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.13" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.13" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.13">
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.13" />
         <PackageReference Include="Moq" Version="4.20.72" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     </ItemGroup>

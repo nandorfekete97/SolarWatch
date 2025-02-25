@@ -108,11 +108,14 @@ namespace SolarWatch
 
         static void AddDbContexts(WebApplicationBuilder builder)
         {
-            builder.Services.AddDbContext<SolarWatchDbContext>(options =>
+            if (!builder.Environment.IsEnvironment("Testing"))
             {
-                options.UseSqlServer(
-                    builder.Configuration["ConnectionStrings:SolarWatchDb"]);
-            });
+                builder.Services.AddDbContext<SolarWatchDbContext>(options =>
+                {
+                    options.UseSqlServer(
+                        builder.Configuration["ConnectionStrings:SolarWatchDb"]);
+                });
+            }
         }
 
         static void AddAuthentication(WebApplicationBuilder builder)
