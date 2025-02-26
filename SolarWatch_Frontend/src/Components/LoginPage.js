@@ -21,6 +21,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
+      // refactor environmental variable 
       const response = await fetch(`${process.env.REACT_APP_API_URL}/Auth/Login`, {
         method: 'POST',
         headers: {

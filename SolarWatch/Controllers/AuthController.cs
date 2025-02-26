@@ -9,10 +9,12 @@ namespace SolarWatch.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authenticationService;
+    private readonly ILogger<AuthController> _logger;
 
-    public AuthController(IAuthService authenticationService)
+    public AuthController(IAuthService authenticationService, ILogger<AuthController> logger)
     {
         _authenticationService = authenticationService;
+        _logger = logger;
     }
 
     [HttpPost("Register")]
@@ -38,6 +40,8 @@ public class AuthController : ControllerBase
     [HttpPost("Login")]
     public async Task<ActionResult<AuthResponse>> Authenticate([FromBody] AuthRequest request)
     {
+        _logger.LogInformation("login endpoint is called ");
+        
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);

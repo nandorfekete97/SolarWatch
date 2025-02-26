@@ -40,7 +40,8 @@ const SolarWatchPage = () => {
         type='date'
         placeholder='Enter date'
         value={date}
-        onChange={(e) => setDate(e.target.value)}
+        onChange={(e) => { console.log(date);
+          setDate(e.target.value)}}
       />
       <button onClick={handleGetSunrise}>Get Sunrise</button>
       <button onClick={handleGetSunset}>Get Sunset</button>
