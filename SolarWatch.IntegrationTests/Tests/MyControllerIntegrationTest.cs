@@ -18,10 +18,19 @@ public class MyControllerIntegrationTest : IClassFixture<SolarWatchWebApplicatio
 {
     private readonly HttpClient _client;
     private string _authToken;
+    private static int _userNumber = 1; 
 
     public MyControllerIntegrationTest(SolarWatchWebApplicationFactory factory)
     {
         _client = factory.CreateClient();
+    }
+    
+    [Fact]
+    public async Task GetSunrise_ReturnsForbidden_WhenUserIsNotAdmin()
+    {
+        await RegisterAndLoginTestUser();
+        var response = await GetAuthenticatedResponseAsync("/SolarWatch/GetSunrise", "Berlin", "2025-02-23");
+        Assert.Equal(System.Net.HttpStatusCode.Forbidden, response.StatusCode);
     }
 
     [Fact]
@@ -34,22 +43,25 @@ public class MyControllerIntegrationTest : IClassFixture<SolarWatchWebApplicatio
         Assert.False(string.IsNullOrEmpty(sunsetTime), "Sunset time should not be empty");
     }
 
-    [Fact]
-    public async Task GetSunrise_ReturnsForbidden_WhenUserIsNotAdmin()
-    {
-        await RegisterAndLoginTestUser();
-        var response = await GetAuthenticatedResponseAsync("/SolarWatch/GetSunrise", "Berlin", "2025-02-23");
-        Assert.Equal(System.Net.HttpStatusCode.Forbidden, response.StatusCode);
-    }
-
     private async Task RegisterAndLoginTestUser()
     {
+        string uniqueEmail = $"testuser_{Guid.NewGuid()}@example.com";
         var registerResponse = await _client.PostAsJsonAsync("/Auth/Register",
-            new RegistrationRequest("testuser@example.com", "testuser", "Test123!"));
+            new RegistrationRequest(uniqueEmail, $"testuser{_userNumber++}", "Test123!"));
+        
+        if (!registerResponse.IsSuccessStatusCode)
+        {
+            var errorContent = await registerResponse.Content.ReadAsStringAsync();
+            throw new Exception($"Registration failed: {errorContent}");
+        }
+        
         registerResponse.EnsureSuccessStatusCode();
+        
+        
         var loginResponse = await _client.PostAsJsonAsync("/Auth/Login",
-            new AuthRequest("testuser@example.com", "Test123!"));
+            new AuthRequest(uniqueEmail, "Test123!"));
         loginResponse.EnsureSuccessStatusCode();
+        
         var authResponse = await loginResponse.Content.ReadFromJsonAsync<AuthResponse>();
         _authToken = authResponse?.Token ?? string.Empty;
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authToken);
