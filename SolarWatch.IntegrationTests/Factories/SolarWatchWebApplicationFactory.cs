@@ -16,7 +16,7 @@ public class SolarWatchWebApplicationFactory : WebApplicationFactory<Program>
         {
             //Get the previous DbContextOptions registrations 
             var solarWatchDbContextDescriptor = services.Single(d => d.ServiceType == typeof(DbContextOptions<SolarWatchDbContext>));
-            
+
             var solarWatchDbContextDescriptor2 = services.Single(d => d.ServiceType == typeof(SolarWatchDbContext));
             
             //Remove the previous DbContextOptions registrations
