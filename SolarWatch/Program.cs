@@ -23,13 +23,11 @@ AddIdentity();
 
 var app = builder.Build();
 
-// Seed roles and admin user
 using var scope = app.Services.CreateScope();
 var authenticationSeeder = scope.ServiceProvider.GetRequiredService<AuthenticationSeeder>();
 authenticationSeeder.AddRoles();
 authenticationSeeder.AddAdmin();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
