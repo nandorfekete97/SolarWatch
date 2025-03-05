@@ -101,13 +101,11 @@ public class SolarService : ISolarService
             return null;
         }
 
-        // Update the fields only if they are not null (partial update)
         if (!string.IsNullOrEmpty(newName))
         {
             city.Name = newName;
         }
 
-        // Save the updated city using the repository
         await _cityRepository.UpdateCityAsync(city);
 
         return city;
