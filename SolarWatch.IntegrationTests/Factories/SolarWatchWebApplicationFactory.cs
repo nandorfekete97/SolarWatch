@@ -16,13 +16,9 @@ public class SolarWatchWebApplicationFactory : WebApplicationFactory<Program>
         {
             //Get the previous DbContextOptions registrations 
             var solarWatchDbContextDescriptor = services.Single(d => d.ServiceType == typeof(DbContextOptions<SolarWatchDbContext>));
-
-            var solarWatchDbContextDescriptor2 = services.Single(d => d.ServiceType == typeof(SolarWatchDbContext));
             
             //Remove the previous DbContextOptions registrations
             services.Remove(solarWatchDbContextDescriptor);
-            
-            services.Remove(solarWatchDbContextDescriptor2);
             
             //Add new DbContextOptions for our two contexts, this time with inmemory db 
             services.AddDbContext<SolarWatchDbContext>(options =>
