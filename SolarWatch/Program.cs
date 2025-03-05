@@ -1,19 +1,18 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using YourNamespace;  // Change this to your actual namespace
-using YourNamespace.Repositories;
-using YourNamespace.Services;
-using YourNamespace.Services.Authentication;
+using SolarWatch;
+using SolarWatch.Repositories;
+using SolarWatch.Services;
+using SolarWatch.Services.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
-var app = builder.Build();
 
 // Call separate methods for better organization
 AddServices();
@@ -21,6 +20,8 @@ ConfigureSwagger();
 AddDbContexts();
 AddAuthentication();
 AddIdentity();
+
+var app = builder.Build();
 
 // Seed roles and admin user
 using var scope = app.Services.CreateScope();
@@ -106,9 +107,9 @@ void ConfigureSwagger()
 
 void AddDbContexts()
 {
-    builder.Services.AddDbContext<YourDbContext>(options =>
+    builder.Services.AddDbContext<SolarWatchDbContext>(options =>
     {
-        options.UseSqlServer(builder.Configuration["ConnectionStrings:YourDb"]);
+        options.UseSqlServer(builder.Configuration["ConnectionStrings:SolarWatchDb"]);
     });
 }
 
@@ -147,7 +148,7 @@ void AddIdentity()
         options.Password.RequireLowercase = false;
     })
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<YourDbContext>();
+    .AddEntityFrameworkStores<SolarWatchDbContext>();
 }
 
 public partial class Program { }
